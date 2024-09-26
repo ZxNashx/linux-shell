@@ -3,6 +3,7 @@
 
 #include <unistd.h>
 #include <fcntl.h>
+#include "defs.h"
 
 // Moves data from one file descriptor to another
 // Returns 0 on success, -1 on failure
@@ -10,7 +11,7 @@ int move_fd(int fd_source, int fd_dest);
 
 // Prints a null-terminated string to standard output
 // Returns the number of characters written
-int print_string(char *char_arr);
+int print_string(char *char_arr, bool newline);
 
 // Prints the contents of a file to the specified destination (file descriptor)
 // Returns 0 on success, -1 on failure

@@ -34,7 +34,7 @@ int move_fd(int fd_source, int fd_dest) {
     return return_code;
 }
 
-int print_string(char * char_arr){
+int print_string(char * char_arr, bool newline){
 	int i = 0;
 	int buff_size = 512;
 	char buffer[buff_size];
@@ -47,9 +47,13 @@ int print_string(char * char_arr){
 			done = true;
 		}
 	}while(done == false);
-	
-	buffer[i] = '\n';
-	write(STDOUT_FILENO, buffer, ++i);
+
+	if(newline){
+		buffer[i] = '\n';
+		write(STDOUT_FILENO, buffer, ++i);
+	}else{
+		write(STDOUT_FILENO, buffer, i);
+	}
 	return i;
 }
 
@@ -75,7 +79,7 @@ int read_input(char * fill_buffer, int max_size){
 		fill_buffer[i] = current_char;
 		i++;
 	}
-	fill_buffer[i] = '\0';
+	fill_buffer[--i] = '\0';
 	return i;
 }
 
