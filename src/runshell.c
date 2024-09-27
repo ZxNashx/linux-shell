@@ -14,12 +14,16 @@ int main(int argc, char *argv[]) {
 
 	char *exit_command = "exit";
 
-    int input_buffer_size = 256;
+	char *command = "/bin/ls";  // Corrected path if it's Linux
+    char *args[] = {command, "-al", NULL};
+    char *env[] = {NULL};
+
+    int input_buffer_size = MAX_STR_SIZE;
     char read_buffer[input_buffer_size];
     int read_result;
     int is_shell_running = true;
 
-    char * cmd_tokens[128];
+    char * cmd_tokens[MAX_CMD_TOKENS];
     int token_count = 0;
     char to_split = ' ';
 
@@ -33,19 +37,20 @@ int main(int argc, char *argv[]) {
 		print_string(read_buffer,true);
 		if(strcmp(read_buffer,exit_command) == true){
 			is_shell_running = false;
+		}else{
+
 		}
+		args[0] = cmd_tokens[0]; // Command
+		args[1] = cmd_tokens[1]; // First argument (if any)
+		args[2] = NULL;          // Null-terminate the argument list
+		command = cmd_tokens[0];
 
 		printf("DEBUG:\nEntered: %s\nResult: %d\nToken count %d\n", read_buffer, read_result, token_count);
-    }
-
-    char *command = "/bin/ls";  // Corrected path if it's Linux
-    char *args[] = {command, "-al", NULL};
-    char *env[] = {NULL};
-
-    int E = run_process(command, args, env, true);
-
-    if(E == -1){
-    	print_string("Error",true);
+		if(token_count > 1){
+			printf("Command:\ncmd: \n%s\nargs: %s\n",cmd_tokens[0],cmd_tokens[1]);
+			int pr = run_process(command, args, env, true);
+			printf("process results: %d\n");
+		}
     }
 
     return 0;

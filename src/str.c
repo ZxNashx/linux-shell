@@ -25,9 +25,11 @@ int strlen(char *str){
 }
 
 int strcpy(char * src, char * dst){
+    int c = 0;
     while(*src != '\0') {
+        c++;
         *dst++ = *src++;
     }
     *dst = '\0';
-    return dst;
+    return c;
 }

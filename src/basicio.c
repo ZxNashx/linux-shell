@@ -79,7 +79,7 @@ int read_input(char * fill_buffer, int max_size){
 		fill_buffer[i] = current_char;
 		i++;
 	}
-	fill_buffer[i] = '\0';
+	fill_buffer[--i] = '\0';
 	return i;
 }
 

@@ -14,8 +14,10 @@ split_on: the character that the array will be split by
 
 */
 
+char temp[MAX_STR_SIZE];
 int split_str(char *str_to_split, char *tokens[], int *count, char split_on) {
-    char *current_position = str_to_split;
+    strcpy(str_to_split,temp);
+    char *current_position = temp;
     int token_index = 0;
     
     // Ensure the count is initialized
