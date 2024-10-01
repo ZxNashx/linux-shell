@@ -2,9 +2,6 @@
 #include <fcntl.h>
 #include "defs.h"
 
-
-
-
 /*
 
 str_to_split: the string that will be split into char arrays based on the value of split_on
@@ -53,3 +50,4 @@ int split_str(char *str_to_split, char *tokens[], int *count, char split_on) {
     *count = token_index;
     return 0; // Optionally return a status code
 }
+

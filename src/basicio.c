@@ -3,6 +3,7 @@
 
 #include "defs.h"
 
+
 int move_fd(int fd_source, int fd_dest) {
     int return_code = 0;
     int read_size = 32; 
@@ -70,17 +71,28 @@ int print_file(char *file_name, int print_destination) {
     return return_code;
 }
 
-int read_input(char * fill_buffer, int max_size){	
-	char current_char = '\0';
-	int i = 0;
-	int read_return;
-	while(current_char != '\n' && i < max_size){
-		read_return = read(0, &current_char, 1);
-		fill_buffer[i] = current_char;
-		i++;
-	}
-	fill_buffer[--i] = '\0';
-	return i;
+int read_input(char *fill_buffer, int max_size) {	
+    char current_char = '\0';
+    int i = 0;
+    int read_return;
+
+    // Read until newline or max_size limit is reached
+    while (current_char != '\n' && i < max_size - 1) {
+        read_return = read(0, &current_char, 1);
+        if (read_return <= 0) break;  // Exit loop on error or EOF
+        fill_buffer[i++] = current_char;
+    }
+
+    // Properly terminate the string
+    fill_buffer[i] = '\0';
+
+    // If we reached the limit, or there's still input left, clear the buffer
+    while (current_char != '\n' && read_return > 0) {
+        read_return = read(0, &current_char, 1);
+    }
+
+    // Return the number of characters read (negative if error occurred)
+    return read_return < 0 ? -i : i;
 }
 
 

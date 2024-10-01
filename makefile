@@ -1,14 +1,14 @@
 
 CC = gcc
 CFLAGS = -Wall -g -no-pie -Iheaders
-LDFLAGS =
+LDFLAGS = 
 
 OBJS = basicio.o parser.o shell.o runshell.o process.o str.o
 
 all: runshell clean
 
 runshell: $(OBJS)
-	$(CC) $(LDFLAGS) -o runshell $(OBJS)
+	$(CC) $(CFLAGS) -o runshell $(OBJS)
 
 basicio.o: src/basicio.c headers/basicio.h headers/defs.h
 	$(CC) $(CFLAGS) -c src/basicio.c -o basicio.o
