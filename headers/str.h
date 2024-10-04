@@ -2,6 +2,7 @@
 #include <fcntl.h>
 #include "defs.h"
 
-int strcmp(char *s1, char *s2);
-int strlen(char *str);
-int strcpy(char * src, char * dst);
+int kstrcmp(char *s1, char *s2);
+int kstrlen(char *str);
+int kstrcpy(char * src, char * dst);
+int kstrconcat(char *src, char *dst);

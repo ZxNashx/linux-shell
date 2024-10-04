@@ -5,7 +5,7 @@
 
 #define MAX_LISTS 10  // Maximum number of process lists in the process tree
 
-int run_process(char *process_name, char **arguments, char **newenvp, bool wait_for_finish) {
+int run_process(char *process_name, char * arguments[], char **newenvp, bool wait_for_finish) {
     pid_t pid;
     int status;
 

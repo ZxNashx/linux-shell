@@ -1,19 +1,20 @@
 #include <unistd.h>
 #include <fcntl.h>
+#include "str.h"
+
 #include "defs.h"
-int strcmp(char *s1, char *s2) {
-	int count = 0;
+int kstrcmp(char *s1, char *s2) {
     while (*s1 == *s2) {
-    	if(*s1 == '\0' && *s2 == '\0'){
-    		return true;
-    	}
-    	s1++;
-    	s2++;
+        if (*s1 == '\0' && *s2 == '\0') {
+            return true; 
+        }
+        s1++;
+        s2++;
     }
-    return false;
+    return false; 
 }
 
-int strlen(char *str){
+int kstrlen(char *str){
     int count = 0;
     if(*str == '\0'){
         return 0;
@@ -24,12 +25,16 @@ int strlen(char *str){
     return count;
 }
 
-int strcpy(char * src, char * dst){
+int kstrcpy(char *src, char *dst) {
+    if (src == NULL || dst == NULL) {
+        return 0;
+    }
     int c = 0;
-    while(*src != '\0') {
+    while (*src != '\0') {
         c++;
         *dst++ = *src++;
     }
-    *dst = '\0';
+    *dst = '\0'; // Ensure the destination string is null-terminated
     return c;
 }
+

@@ -84,7 +84,7 @@ int read_input(char *fill_buffer, int max_size) {
     }
 
     // Properly terminate the string
-    fill_buffer[i] = '\0';
+    fill_buffer[--i] = '\0';
 
     // If we reached the limit, or there's still input left, clear the buffer
     while (current_char != '\n' && read_return > 0) {
@@ -94,5 +94,3 @@ int read_input(char *fill_buffer, int max_size) {
     // Return the number of characters read (negative if error occurred)
     return read_return < 0 ? -i : i;
 }
-
-
