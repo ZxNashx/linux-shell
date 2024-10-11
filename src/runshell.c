@@ -34,14 +34,11 @@ int main(int argc, char *argv[]) {
 		print_string("Entered: ",false);
 		print_string(read_buffer,true);
 
-		split_str(read_buffer, cmd_tokens, &token_count, to_split);
-		print_string("split string",true);
+		int split_str_result = split_str(read_buffer, cmd_tokens, &token_count, to_split);
 		is_shell_cmd = false;
 		if(kstrcmp(read_buffer,exit_command) == true){
 			is_shell_cmd = true;
 			is_shell_running = false;
-		}else{
-			is_shell_cmd = false;
 		}
 
 		command = cmd_tokens[0];
@@ -50,9 +47,15 @@ int main(int argc, char *argv[]) {
 
 		printf("DEBUG:\nEntered: %s\nResult: %d\nToken count %d\n", read_buffer, read_result, token_count);
         if (!is_shell_cmd) {
-			cmd_tokens[token_count] = NULL;
-            int pr = run_process(command, cmd_tokens, env, true);
-            printf("process results: %d\n", pr);
+			if(split_str_result > 1){
+				cmd_tokens[token_count] = NULL;
+				int pr = run_process(command, cmd_tokens, env, true);
+				printf("process results: %d\n", pr);
+			}else{
+				cmd_tokens[token_count] = NULL;
+				int pr = run_process(command, cmd_tokens, env, true);
+				printf("process results: %d\n", pr);
+			}
         }
     }
 

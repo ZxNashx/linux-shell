@@ -11,7 +11,6 @@ static size_t memory_offset = 0;
 static Task *task_pool[MAX_TASKS];
 static int task_pool_index = 0;  
 
-
 void task_memory_init() {
     memory_offset = 0;  
     task_pool_index = 0;

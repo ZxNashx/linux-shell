@@ -62,5 +62,5 @@ int split_str(char *str_to_split, char *tokens[], int *count, char split_on) {
         printf("Token[%d]: %s\n", i, tokens[i]);
     }
 
-    return 0; // Optionally return a status code
+    return 0;
 }
