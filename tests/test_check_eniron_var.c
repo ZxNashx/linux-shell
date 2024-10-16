@@ -5,17 +5,22 @@
 #include "defs.h"
 #include "utils.h"
 
+#include "basicio.h"
+
 int main() {
     char *env_value;
-    char var_name[] = "PATH";  // You can change this to any environment variable name
+    print_string("Type in a environment Variable: ", false);
 
-    int value_len = get_env_value(var_name, &env_value);
+    int read_result;
+    int input_buffer_size = MAX_STR_SIZE;
+    char read_buffer[input_buffer_size];
+    read_result = read_input(read_buffer, input_buffer_size);
+    int value_len = get_env_value(read_buffer, &env_value);
 
     if (value_len > 0) {
-        write(STDOUT_FILENO, var_name, kstrlen(var_name));  // Print variable name
-        write(STDOUT_FILENO, "=", 1);
-        write(STDOUT_FILENO, env_value, value_len);  // Print variable value
-        write(STDOUT_FILENO, "\n", 1);
+        print_string(read_buffer,false);
+        print_string("=",false);
+        print_string(env_value, true);
     } else {
         write(STDERR_FILENO, "Environment variable not found\n", 31);
     }

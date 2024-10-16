@@ -10,6 +10,7 @@ typedef struct Task {
     char *input_file;            // Input redirection file
     char *output_file;           // Output redirection file
     int is_background;           // Background task flag
+    int is_pipe;
     struct Task *next;           // Pointer to the next task in a pipeline
 } Task;
 
@@ -20,7 +21,7 @@ typedef struct Command {
 } Command;
 
 
-void get_task(Task *task, char *str_to_split, char *tokens[], int *count, char split_on);
+void get_tasks(Task *task, char *str_to_split, char *tokens[], int *count, char split_on);
 
 // Function Prototypes
 void task_memory_init();  // Initializes the memory pool for Task allocations

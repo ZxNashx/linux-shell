@@ -53,16 +53,16 @@ int main(int argc, char *argv[]) {
 
 		printf("DEBUG:\nEntered: %s\nResult: %d\nToken count %d\n", read_buffer, read_result, token_count);
         if (!is_shell_cmd) {
-			if(split_str_result > 1){
-				cmd_tokens[token_count] = NULL;
-				int pr = run_process(command, cmd_tokens, env, true, STDIN_FILENO, STDOUT_FILENO);
-				printf("process results: %d\n", pr);
-			}else{
-				cmd_tokens[token_count] = NULL;
-				command = cmd_tokens[0];
-				int pr = run_process(command, cmd_tokens, env, true, STDIN_FILENO, STDOUT_FILENO);
-				printf("process results: %d\n", pr);
-			}
+					if(split_str_result > 1){
+						cmd_tokens[token_count] = NULL;
+						int pr = run_process(command, cmd_tokens, env, true, STDIN_FILENO, STDOUT_FILENO);
+						printf("process results: %d\n", pr);
+					}else{
+						cmd_tokens[token_count] = NULL;
+						command = cmd_tokens[0];
+						int pr = run_process(command, cmd_tokens, env, true, STDIN_FILENO, STDOUT_FILENO);
+						printf("process results: %d\n", pr);
+					}
         }
     }
 

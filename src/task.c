@@ -1,5 +1,6 @@
 #include "defs.h"
-
+#include <fcntl.h>
+#include <sys/wait.h>
 #include <stdio.h>
 #include <stdint.h>
 #include <string.h>
@@ -12,7 +13,7 @@ static Task *task_pool[MAX_TASKS];
 static int task_pool_index = 0;  
 //hello kevin
 //hello axyl
-void get_task(Task *task, char *str_to_split, char *tokens[], int *count, char split_on) {
+void get_tasks(Task *task, char *str_to_split, char *tokens[], int *count, char split_on) {
     // Split the input string into tokens based on spaces or other delimiters
     char *temp = str_to_split;
     int split_str_result = split_str(temp, tokens, count, split_on);  // Assuming split_str() is implemented
@@ -20,12 +21,13 @@ void get_task(Task *task, char *str_to_split, char *tokens[], int *count, char s
     int arg_count = 0;
 
     // Initialize task fields (if needed)
-    task->input_file = NULL;
-    task->output_file = NULL;
+    task->arg_count = 0;
+    task->input_file = NULL;//standard input
+    task->output_file = NULL;//standard output
     task->is_background = 0;  // 0: No pipe, 1: Piped
 
     // Process tokens
-    while (tokens[curr_token] != NULL) {
+    while (arg_count < *count) {
         if (kstrcmp(tokens[curr_token], "<") == true) {
             // Input redirection
             curr_token++;
@@ -34,13 +36,13 @@ void get_task(Task *task, char *str_to_split, char *tokens[], int *count, char s
             }
         } else if (kstrcmp(tokens[curr_token], ">") == true) {
             // Output redirection
-            curr_token++;
+            task->next->output_file = tokens[curr_token++];
             if (tokens[curr_token] != NULL) {
                 task->output_file = tokens[curr_token];  // Store the output file name
             }
         } else if (kstrcmp(tokens[curr_token], "|") == true) {
             // Pipe handling
-            task->is_background = 1;  // Indicate that there is a pipe
+            task->is_pipe = 1;  // Indicate that there is a pipe
             break;  // Stop processing for this task, as the rest is part of the next task
         } else {
             // Regular argument
@@ -49,7 +51,7 @@ void get_task(Task *task, char *str_to_split, char *tokens[], int *count, char s
         }
         curr_token++;
     }
-
+    task->arg_count = arg_count;
     // Null-terminate the arguments list
     task->args[arg_count] = NULL;
 }

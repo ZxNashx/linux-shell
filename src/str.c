@@ -2,6 +2,8 @@
 #include <fcntl.h>
 #include "str.h"
 
+#include <stdio.h>
+
 #include "defs.h"
 
 int kstrcmp(char *s1, char *s2) {
@@ -15,13 +17,30 @@ int kstrcmp(char *s1, char *s2) {
     return false; 
 }
 
+int kstrcmp_by_n(char *s1, char *s2, int n) {
+    int i = 0;
+    while (i < n && *s1 == *s2) {  // Compare up to n characters
+        if (*s1 == '\0' || *s2 == '\0') {  // Stop if either string ends before n characters
+            break;
+        }
+        s1++;
+        s2++;
+        i++;
+    }
+
+    // Check if we stopped because we reached n characters or due to a mismatch
+    return (i == n || (*s1 == *s2));
+}
+
 int kstrlen(char *str){
     int count = 0;
     if(*str == '\0'){
         return 0;
     }
     while(*str != '\0'){
+        printf("%c", *str);
         count++;
+        *str++;
     }
     return count;
 }

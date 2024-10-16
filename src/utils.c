@@ -12,12 +12,10 @@ int get_env_value(char *var_name, char **env_value) {
     ssize_t bytesRead;
     char *var_start = NULL;
 
-    printf("Starting get_val\n");
 
     int var_len = kstrlen(var_name);  // Use custom function to get the length of var_name
 
 
-    printf("got str len \n");
     // Open /proc/self/environ file to access the environment variables
     fd = open("/proc/self/environ", O_RDONLY);
     if (fd < 0) {
@@ -35,10 +33,9 @@ int get_env_value(char *var_name, char **env_value) {
     close(fd);
 
     // Traverse through environment variables in the buffer
-    printf("getting file\n");
     for (int i = 0; i < bytesRead; ) {
         // Compare the current variable name with var_name
-        if (kstrcmp(&buffer[i], var_name) == true && buffer[i + var_len] == '=') {
+        if (kstrcmp_by_n(&buffer[i], var_name, var_len) == true && buffer[i + var_len] == '=') {
             var_start = &buffer[i + var_len + 1];  // Skip "var_name="
             break;
         }
@@ -55,7 +52,6 @@ int get_env_value(char *var_name, char **env_value) {
     }
 
     // Calculate the length of the environment variable value (until the next '\0')
-    printf("getting length of var\n");
     int j = 0;
     while (var_start[j] != '\0' && (var_start + j) < buffer + bytesRead) {
         j++;
