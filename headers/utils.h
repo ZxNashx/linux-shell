@@ -1,0 +1,1 @@
+int get_path_env(char **env_value);

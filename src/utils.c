@@ -1,14 +1,23 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#include <stdio.h>
+
 #include "defs.h"
 
-int get_path_env(char **env_value) {
+// Function to get the value of an environment variable
+int get_env_value(char *var_name, char **env_value) {
     int fd;
     char buffer[ENV_BUFFER];
     ssize_t bytesRead;
-    char *path_start = NULL;
+    char *var_start = NULL;
 
+    printf("Starting get_val\n");
+
+    int var_len = kstrlen(var_name);  // Use custom function to get the length of var_name
+
+
+    printf("got str len \n");
     // Open /proc/self/environ file to access the environment variables
     fd = open("/proc/self/environ", O_RDONLY);
     if (fd < 0) {
@@ -25,23 +34,36 @@ int get_path_env(char **env_value) {
     // Close the file descriptor
     close(fd);
 
-    // Search for the PATH variable in the buffer
-    for (char *current = buffer; current < buffer + bytesRead; current++) {
-        if (current[0] == 'P' && current[1] == 'A' && current[2] == 'T' && current[3] == 'H' && current[4] == '=') {
-            path_start = current + 5;  // Skip "PATH="
+    // Traverse through environment variables in the buffer
+    printf("getting file\n");
+    for (int i = 0; i < bytesRead; ) {
+        // Compare the current variable name with var_name
+        if (kstrcmp(&buffer[i], var_name) == true && buffer[i + var_len] == '=') {
+            var_start = &buffer[i + var_len + 1];  // Skip "var_name="
             break;
         }
-        // Move to the next environment variable (skipping '\0')
-        while (current < buffer + bytesRead && *current != '\0') {
-            current++;
+        
+        // Move to the next environment variable by skipping over the null-terminated string
+        while (i < bytesRead && buffer[i] != '\0') {
+            i++;
         }
+        i++;  // Move past the null terminator to the next environment variable
     }
 
-    if (path_start == NULL) {
-        return -1;  // PATH variable not found
+    if (var_start == NULL) {
+        return -1;  // Specified environment variable not found
     }
 
-    // Allocate memory and copy the PATH value to the provided string pointer
-    *env_value = path_start;
-    return 0;  // Success
+    // Calculate the length of the environment variable value (until the next '\0')
+    printf("getting length of var\n");
+    int j = 0;
+    while (var_start[j] != '\0' && (var_start + j) < buffer + bytesRead) {
+        j++;
+    }
+
+    // Set the env_value to point to the start of the environment variable's value
+    *env_value = var_start;
+
+    // Return the length of the variable's value
+    return j;
 }

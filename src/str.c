@@ -39,3 +39,27 @@ int kstrcpy(char *src, char *dst) {
     return c;
 }
 
+
+int kstrhas(char *str, char *substring) {
+    if (*substring == '\0') {
+        // If the substring is empty, we assume it is always found
+        return true;
+    }
+
+    for (int i = 0; str[i] != '\0'; i++) {
+        int j;
+        // Check if substring matches at position i
+        for (j = 0; substring[j] != '\0'; j++) {
+            if (str[i + j] == '\0' || str[i + j] != substring[j]) {
+                break;  // If characters don't match, break out of the inner loop
+            }
+        }
+        if (substring[j] == '\0') {
+            // If we completed the inner loop, substring was found
+            return true;
+        }
+    }
+
+    // If no match was found after going through the main string
+    return false;
+}
