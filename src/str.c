@@ -46,7 +46,7 @@ int kstrlen(char *str){
 }
 
 int kstrcpy(char *src, char *dst) {
-    if (src == NULL || dst == NULL) {
+    if (src == NULL) {
         return 0;
     }
     int c = 0;
@@ -64,7 +64,6 @@ int kstrhas(char *str, char *substring) {
         // If the substring is empty, we assume it is always found
         return true;
     }
-
     for (int i = 0; str[i] != '\0'; i++) {
         int j;
         // Check if substring matches at position i
@@ -76,6 +75,23 @@ int kstrhas(char *str, char *substring) {
         if (substring[j] == '\0') {
             // If we completed the inner loop, substring was found
             return true;
+        }
+    }
+
+    // If no match was found after going through the main string
+    return false;
+}
+
+
+int kstrhas_unary(char *str, char uchar) {
+    if (uchar == '\0') {
+        // If the uchar is empty, we assume it is always found
+        return true;
+    }
+    for (int i = 0; str[i] != '\0'; i++) {
+        // Check if substring matches at position i
+            if (str[i] == uchar) {
+                return true;
         }
     }
 

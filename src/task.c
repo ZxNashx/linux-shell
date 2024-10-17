@@ -3,28 +3,57 @@
 #include <sys/wait.h>
 #include <stdio.h>
 #include <stdint.h>
-#include <string.h>
 #include "task.h"
-
+#include "parser.h"
+#include "str.h"
+/*
 static uint8_t memory_pool[MEMORY_POOL_SIZE];
 static size_t memory_offset = 0;  
 
 static Task *task_pool[MAX_TASKS];
 static int task_pool_index = 0;  
+
+// Function to link two tasks in a pipeline
+void link_tasks(Task *first, Task *second) {
+    first->next = second;
+    second->prev = first;
+    first->is_pipe = true;
+    second->is_pipe = true;
+}
+*/
+
 //hello kevin
 //hello axyl
-void get_tasks(Task *task, char *str_to_split, char *tokens[], int *count, char split_on) {
+void get_tasks(Task_List list, char *str_to_split, char *tokens[],
+               int *count, char *original) {
+
+    char *temp_tokens[MAX_CMD_TOKENS]; //a temporary array to split args to different tasks
+    int temp_token_count = 0;          //number of tokens in temp_tokens
     // Split the input string into tokens based on spaces or other delimiters
-    char *temp = str_to_split;
-    int split_str_result = split_str(temp, tokens, count, split_on);  // Assuming split_str() is implemented
-    int curr_token = 0;
-    int arg_count = 0;
+    //int split_str_result = split_str(str_to_split, tokens, count, SPACE, original);  // Assuming split_str() is implemented
+    int split_str_result;
+    
+    
+    //int curr_token = 0;
+    //int arg_count = 0;
+
+    //Firstly separate using '&' and fill the Task_List
+    if(kstrhas_unary(str_to_split, RUN_IN_BKG)) {
+        split_str_result = split_str(str_to_split, temp_tokens, &temp_token_count, RUN_IN_BKG, original);
+        //tokenize(str_to_split, tokens, &temp_token_count, SPACE) **REMOVE IF tokenize NOT IMPLEMENTED**
+    }
+
+    if (split_str_result == -1) { //if split_str() failed to execute
+        return; //probably add some kind of error catching instead here later
+    }
+
+    printf("temp_token_count: %i\n", temp_token_count);
+
+
 
     // Initialize task fields (if needed)
-    task->arg_count = 0;
-    task->input_file = NULL;//standard input
-    task->output_file = NULL;//standard output
-    task->is_background = 0;  // 0: No pipe, 1: Piped
+
+   /* Task *task;
 
     // Process tokens
     while (arg_count < *count) {
@@ -54,11 +83,13 @@ void get_tasks(Task *task, char *str_to_split, char *tokens[], int *count, char 
     task->arg_count = arg_count;
     // Null-terminate the arguments list
     task->args[arg_count] = NULL;
+    
+    */
 }
 
 
 
-
+/*
 void task_memory_init() {
     memory_offset = 0;  
     task_pool_index = 0;
@@ -123,3 +154,4 @@ void display_task_memory() {
         printf("  Task %d at %p\n", i, (void *)task_pool[i]);
     }
 }
+*/

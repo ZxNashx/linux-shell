@@ -1,0 +1,10 @@
+total 28
+drwxrwxr-x 2 acare318 acare318 4096 Oct 17 00:30 .
+drwxrwxr-x 6 acare318 acare318 4096 Oct 17 00:31 ..
+-rw-rw-r-- 1 acare318 acare318   33 Oct 17 01:31 bash_test_cmd.sh
+-rw-rw-r-- 1 acare318 acare318    0 Oct 16 01:34 board_funcs.c
+-rw-rw-r-- 1 acare318 acare318    0 Oct 17 01:32 out2.txt
+-rw-rw-r-- 1 acare318 acare318  948 Oct 16 00:05 test_basicio.c
+-rw-rw-r-- 1 acare318 acare318  709 Oct 16 01:40 test_check_eniron_var.c
+-rw-rw-r-- 1 acare318 acare318 1070 Oct 17 00:24 test_gettask.c
+-rw-rw-r-- 1 acare318 acare318 2848 Oct 17 00:13 test_run_task.c

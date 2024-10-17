@@ -11,48 +11,46 @@
 #include "str.h"
 
 int main () {
-  char *shell_name = "$= ";
-	char *exit_command = "exit";
-
-    int input_buffer_size = MAX_STR_SIZE;
-    char read_buffer[input_buffer_size];
+    //basic shell inits. for main
+    char *shell_name = "$= ";
+	  char *exit_command = "exit";
+    char read_buffer[MAX_STR_SIZE];
     int read_result;
     int is_shell_running = true;
-    Task* test_task;
-    char *env[] = {NULL};
-    
-
+    Task_List task_list;
+    //char *env[] = {NULL};
     char * cmd_tokens[MAX_CMD_TOKENS];
-    int token_count = 0;
-    char to_split = ' ';
-	bool is_shell_cmd;
+    int task_count = 0;
+	  bool is_shell_cmd;
+    char temp_string[MAX_STR_SIZE];
 
+    //main program loop
     while(is_shell_running){
-      int mycount = 0;
+      //int mycount = 0;
       print_string(shell_name,false);
-      read_result = read_input(read_buffer, input_buffer_size);
-      print_string("Entered: ",false);
-      print_string(read_buffer,true);
-
-      get_tasks(test_task, read_buffer, cmd_tokens, &token_count, to_split);
-
+      read_result = read_input(read_buffer, MAX_STR_SIZE); //get input from user.
+      if (read_result == -1) {
+        return 0; //could not read input error
+      }
+      get_tasks(task_list, read_buffer, cmd_tokens, &task_count, temp_string);
+      printf("task count %i\n", task_count);
 
       is_shell_cmd = false;
-      printf("%i\n",test_task->arg_count);
-      while (mycount < test_task->arg_count) {
-        printf("arg: %s\n", test_task->args[mycount++]);
-      }
-      if(kstrcmp(read_buffer,exit_command) == true){
+      if(kstrcmp(read_buffer, exit_command) == true){
         is_shell_cmd = true;
         is_shell_running = false;
-      } else {
-        run_process(test_task->args[0], cmd_tokens, env, 
-        true, task->input_file, task->output_file);
+      } else if (is_shell_cmd){
+        //run processess and commands
       }
+
+      /*
+      // Print out the tokens for debugging
+    for (int i = 0; i < token_index; i++) {
+        printf("Token[%d]: %s, length %i\n", i, tokens[i], kstrlen(tokens[i]));
     }
 
-    return 0;
-
+    */
+    }
 
   return 0;
 }

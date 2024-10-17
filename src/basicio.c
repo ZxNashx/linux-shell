@@ -79,7 +79,8 @@ int read_input(char *fill_buffer, int max_size) {
     // Read until newline or max_size limit is reached
     while (current_char != '\n' && i < max_size - 1) {
         read_return = read(0, &current_char, 1);
-        if (read_return <= 0) break;  // Exit loop on error or EOF
+        if (read_return <= 0) 
+            break;  // Exit loop on error or EOF
         fill_buffer[i++] = current_char;
     }
 

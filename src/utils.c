@@ -2,7 +2,7 @@
 #include <fcntl.h>
 
 #include <stdio.h>
-
+#include "str.h"
 #include "defs.h"
 
 // Function to get the value of an environment variable

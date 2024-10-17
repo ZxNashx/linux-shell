@@ -23,6 +23,7 @@ int main(int argc, char *argv[]) {
 
     int input_buffer_size = MAX_STR_SIZE;
     char read_buffer[input_buffer_size];
+	char original_input_buffer[input_buffer_size];
     int read_result;
     int is_shell_running = true;
 
@@ -40,7 +41,7 @@ int main(int argc, char *argv[]) {
 		print_string("Entered: ",false);
 		print_string(read_buffer,true);
 
-		int split_str_result = split_str(read_buffer, cmd_tokens, &token_count, to_split);
+		int split_str_result = split_str(read_buffer, cmd_tokens, &token_count, to_split, original_input_buffer);
 		is_shell_cmd = false;
 		if(kstrcmp(read_buffer,exit_command) == true){
 			is_shell_cmd = true;

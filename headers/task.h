@@ -3,25 +3,72 @@
 
 #include "defs.h"
 
-// Task structure definition
+
+
+/**
+ * @brief Structure to represent a task (or command) in a pipeline for a shell program.
+ * 
+ * This structure holds all necessary information to manage the execution of a single task or 
+ * command. It includes arguments, input/output file descriptors, filenames for redirection, 
+ * and flags for background execution and pipelines. Each task can be linked to others to 
+ * form a pipeline using `next` and `prev` pointers.
+ */
+
+
 typedef struct Task {
-    char *args[MAX_CMD_TOKENS];  // Command and arguments
-    int arg_count;               // Number of command arguments
-    char *input_file;            // Input redirection file
-    char *output_file;           // Output redirection file
-    int is_background;           // Background task flag
-    int is_pipe;
-    struct Task *next;           // Pointer to the next task in a pipeline
+    char *args[MAX_CMD_TOKENS];  /**< Array of command arguments, including the command itself.
+                                      This must be null-terminated to work with exec functions. */
+
+    int arg_count;               /**< Number of arguments provided, including the command name. */
+
+    int input_fd;                /**< Input file descriptor.
+                                      - Holds the file descriptor for redirected input.
+                                      - Default: -1 (not set).
+                                      - If no redirection: STDIN_FILENO (0). */
+
+    int output_fd;               /**< Output file descriptor.
+                                      - Holds the file descriptor for redirected output.
+                                      - Default: -1 (not set).
+                                      - If no redirection: STDOUT_FILENO (1). */
+
+    char *input_filename;        /**< Name of the file used for input redirection (if any).
+                                      - Used to open input_fd if provided. */
+
+    char *output_filename;       /**< Name of the file used for output redirection (if any).
+                                      - Used to open output_fd if provided. */
+
+    int is_background;           /**< Flag to indicate if the task should run in the background.
+                                      - true: Run in background.
+                                      - false: Run in foreground (default). */
+
+    int is_pipe;                 /**< Flag to indicate if the task is part of a pipeline.
+                                      - true: Task is part of a pipeline.
+                                      - false: Not part of a pipeline (default). */
+
+    struct Task *next;           /**< Pointer to the next task in the pipeline (if any).
+                                      - NULL if this is the last task in the pipeline. */
+
+    struct Task *prev;           /**< Pointer to the previous task in the pipeline (if any).
+                                      - NULL if this is the first task in the pipeline. */
 } Task;
+
+
+
+typedef struct Task_List {
+    Task *list[MAX_NUM_TASKS]; //an array of tasks from which we can run processes
+} Task_List;
+
 
 //probably get rid of this
 typedef struct Command {
+    char * command;
     char *argv[MAX_ARGS + 1];
     unsigned int argc;
 } Command;
 
 
-void get_tasks(Task *task, char *str_to_split, char *tokens[], int *count, char split_on);
+void get_tasks(Task_List list, char *str_to_split, char *tokens[],
+               int *count, char * original);
 
 // Function Prototypes
 void task_memory_init();  // Initializes the memory pool for Task allocations
