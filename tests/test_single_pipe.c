@@ -59,5 +59,6 @@ int main(){
 
     // Run the pipeline
     run_task_pipeline(&task1);
-    
+
 }
+

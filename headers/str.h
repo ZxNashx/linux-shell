@@ -1,5 +1,8 @@
 #ifndef STR_H
 #define STR_H
+
+#include <stdbool.h>  // For the `bool` type
+
 /**
  * @brief Compares two strings for equality.
  *
@@ -46,6 +49,17 @@ int kstrlen(char *str);
  * @return The number of characters copied (excluding the null terminator).
  */
 int kstrcpy(char *src, char *dst);
+
+/**
+ * @brief Concatenates two strings.
+ *
+ * Appends the contents of the second string to the first string. Assumes that 
+ * the first string has enough space to hold the result.
+ * 
+ * @param s1 Pointer to the first string (destination).
+ * @param s2 Pointer to the second string (source).
+ */
+void kstrconcat(char *s1, const char *s2);
 
 /**
  * @brief Checks if a substring exists within a string.

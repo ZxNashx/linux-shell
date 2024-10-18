@@ -67,9 +67,9 @@ typedef struct Command {
     unsigned int argc;
 } Command;
 
-void init_task_list(Task_List tasks, Task array[]);
-void get_tasks(Task_List job_list, char *str_to_split, char *tokens[],
-               int *count, char *temp_string);
+void init_task_list(Task_List *tasks, Task array[]);
+void get_tasks(Task_List *job_list, char *str_to_split, char *tokens[],
+               int *count, char *temp_string, char *temp_string2);
 
 // Function Prototypes
 void task_memory_init();  // Initializes the memory pool for Task allocations

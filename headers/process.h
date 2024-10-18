@@ -7,30 +7,6 @@
 // Function declarations
 
 /**
- * @brief Runs a single process with input/output redirection and optional waiting.
- *
- * @param process_name Name of the process to run (e.g., "/bin/ls").
- * @param arguments Null-terminated array of arguments for the process.
- * @param newenvp Environment variables for the new process.
- * @param wait_for_finish If true, the function waits for the process to complete.
- * @param input_fd File descriptor for input redirection.
- * @param output_fd File descriptor for output redirection.
- * @return The process exit status if wait_for_finish is true, or the child PID if false.
- *         Returns -1 on error.
- */
-int run_process(char *process_name, char *arguments[], char **newenvp, 
-                bool wait_for_finish, int input_fd, int output_fd);
-
-/**
- * @brief Sets up input and output redirection for the current process.
- *
- * @param input_fd File descriptor for input.
- * @param output_fd File descriptor for output.
- * @return 0 on success, -1 on failure.
- */
-int setup_redirection(int input_fd, int output_fd);
-
-/**
  * @brief Executes a pipeline of tasks, linking processes together with pipes.
  *
  * @param task Pointer to the head of the task pipeline.
@@ -39,20 +15,53 @@ int setup_redirection(int input_fd, int output_fd);
 int run_task_pipeline(Task *task);
 
 /**
- * @brief Resets invalid file descriptors to standard input and output.
- *
- * @param tasks Array of task pipelines.
- * @param task_count Number of task pipelines.
- */
-void clean(Task *tasks[], int task_count);
-
-/**
  * @brief Runs multiple task pipelines concurrently.
  *
  * @param tasks Array of task pipelines.
  * @param task_count Number of task pipelines.
  * @return 0 on success, -1 on failure.
  */
-int run_task_tree(Task *tasks[], int task_count);
-
+int run_task_tree(Task tasks[], int task_count);
+/**
+ * @brief Configures input and output redirection for a given task.
+ * 
+ * This function ensures that the appropriate input and output streams are correctly set up
+ * for the task, based on its redirection requirements. If the task specifies input or output
+ * filenames, the function opens the corresponding files and redirects the standard input
+ * or output. If the task is part of a pipeline, the file descriptors are redirected accordingly.
+ * 
+ * @param task Pointer to the Task structure to configure I/O redirection for.
+ * 
+ * @return 
+ * - 0 on success.
+ * - -1 on failure (e.g., unable to open files or set up redirection).
+ * 
+ * @details
+ * - **Input Redirection**: If `task->input_filename` is not `NULL`, the function opens the file 
+ *   for reading and redirects it to the task’s standard input (STDIN).
+ * - **Output Redirection**: If `task->output_filename` is not `NULL`, the function opens the file 
+ *   for writing (or creates it) and redirects it to the task’s standard output (STDOUT).
+ * - **Pipes**: If the task is part of a pipeline, the function ensures that:
+ *   - The previous task's output is connected to the current task's input.
+ *   - The current task’s output is prepared to connect to the next task's input.
+ * - **Error Handling**: If any system call fails (e.g., `open()` or `dup2()`), the function 
+ *   prints an error message and returns -1 to indicate failure.
+ * 
+ * Example:
+ * @code
+ * Task task = {
+ *     .args = {"/bin/cat", "input.txt", NULL},
+ *     .input_filename = "input.txt",
+ *     .output_filename = "output.txt",
+ *     .is_pipe = false,
+ *     .input_fd = -1,
+ *     .output_fd = -1,
+ * };
+ * if (setup_io(&task) == -1) {
+ *     perror("Failed to set up I/O");
+ *     return -1;
+ * }
+ * @endcode
+ */
+int setup_io(Task *task);
 #endif  // PROCESS_H

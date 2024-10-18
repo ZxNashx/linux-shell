@@ -18,21 +18,19 @@ int main () {
     char read_buffer[MAX_STR_SIZE];
     int read_result;
     int is_shell_running = true;
-    Task job_array[MAX_NUM_TASKS];
-    Task_List job_list;
+    Task job_array[MAX_NUM_TASKS]; //   
+    Task_List job_list; 
 
     //char *env[] = {NULL};
     char * cmd_tokens[MAX_CMD_TOKENS];
     int task_count = 0;
 	  bool is_shell_cmd;
     char temp_string[MAX_STR_SIZE];
-
-    job_array[8].args[0] = "hi";
-
+    char temp_string2[MAX_STR_SIZE];
 
     //main program loop
     while(is_shell_running){
-      init_task_list(job_list, job_array);
+      init_task_list(&job_list, job_array);
       //int mycount = 0;
       print_string(shell_name,false);
       read_result = read_input(read_buffer, MAX_STR_SIZE); //get input from user.
@@ -40,7 +38,7 @@ int main () {
         return 0; //could not read input error
       }
       
-      get_tasks(job_list, read_buffer, cmd_tokens, &task_count, temp_string);
+      get_tasks(&job_list, read_buffer, cmd_tokens, &task_count, temp_string, temp_string2);
       printf("task count %i\n", task_count);
 
       is_shell_cmd = false;

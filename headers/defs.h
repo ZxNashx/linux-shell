@@ -1,31 +1,58 @@
-#define false 0
-#define true 1
-#define bool int
+#ifndef DEFS_H
+#define DEFS_H
 
-#define MAX_STR_SIZE 256
-#define MAX_CMD_TOKENS 128
-#define MAX_ARGS 10
+/**
+ * @brief Boolean definitions for compatibility with older C standards.
+ *
+ * These macros provide basic boolean logic using `int` since older C standards
+ * do not natively support `bool`. 
+ */
+#define false 0  /**< Represents the boolean value false. */
+#define true 1   /**< Represents the boolean value true. */
+#define bool int /**< Defines `bool` as an alias for `int`. */
 
-#define EXIT_FAILURE -1
-#define EXIT_SUCCESS 0
+/**
+ * @brief Constants for string sizes and command handling.
+ */
+#define MAX_STR_SIZE 256      /**< Maximum length for a single string. */
+#define MAX_CMD_TOKENS 128    /**< Maximum number of tokens per command. */
+#define MAX_ARGS 10           /**< Maximum number of arguments allowed per command. */
 
+/**
+ * @brief Exit status codes for process handling.
+ *
+ * These codes indicate whether a program exited successfully or encountered an error.
+ */
+#define EXIT_FAILURE -1  /**< Indicates that the program or task failed. */
+#define EXIT_SUCCESS 0   /**< Indicates that the program or task completed successfully. */
 
+/**
+ * @brief Character constants used for string splitting and command parsing.
+ *
+ * These constants represent special symbols typically used in shell commands.
+ */
+#define SPACE ' '            /**< Represents a space character, used to separate tokens. */
+#define INPUT_REDIR '<'      /**< Input redirection symbol. */
+#define OUTPUT_REDIR '>'     /**< Output redirection symbol. */
+#define PIPE '|'             /**< Pipe symbol, used to chain commands. */
+#define RUN_IN_BKG '&'       /**< Background execution symbol. */
 
-//defines for splitting strings
-#define SPACE ' '
-#define INPUT_REDIR '<'
-#define OUTPUT_REDIR '>'
-#define PIPE '|'
-#define RUN_IN_BKG '&'
+/**
+ * @brief Constants for task management and memory usage.
+ */
+#define MAX_NUM_TASKS 10     /**< Initial maximum number of tasks (can be increased). */
+#define MAX_TASKS 32         /**< Maximum number of tasks to allocate at runtime. */
+#define MEMORY_POOL_SIZE 4096 /**< Size of the memory pool for task allocations (4 KB). */
 
-// for tasks
-#define MAX_NUM_TASKS 10
+/**
+ * @brief Environment variable handling buffer size.
+ */
+#define ENV_BUFFER 4096      /**< Buffer size for reading environment variables. */
 
-#define MEMORY_POOL_SIZE 4096 // Memory pool size for all task allocations (4 KB)
-#define MAX_TASKS 32          // Maximum number of Task structures to allocate
+/**
+ * @brief Limit for the `run_task_tree` function.
+ */
+#define MAX_LISTS 16         /**< Maximum number of lists allowed by `run_task_tree`. */
 
-#define ENV_BUFFER 4096
-
-
-#define MAX_LISTS 16  // For run_task_tree's limit
+#endif // DEFS_H
 

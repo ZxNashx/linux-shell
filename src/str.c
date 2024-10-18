@@ -5,7 +5,9 @@
 #include <stdio.h>
 
 #include "defs.h"
+// welcome to the kevin string library
 
+// Helper functions provided
 int kstrcmp(char *s1, char *s2) {
     while (*s1 == *s2) {
         if (*s1 == '\0' && *s2 == '\0') {
@@ -15,6 +17,21 @@ int kstrcmp(char *s1, char *s2) {
         s2++;
     }
     return false; 
+}
+void kstrconcat(char *s1, const char *s2)
+{
+    // Move pointer to the end of s1
+    while (*s1 != '\0') {
+        s1++;
+    }
+
+    // Copy s2 to the end of s1
+    while (*s2 != '\0') {
+        *s1++ = *s2++;
+    }
+
+    // Null-terminate the resulting string
+    *s1 = '\0';
 }
 
 int kstrcmp_by_n(char *s1, char *s2, int n) {
@@ -32,15 +49,15 @@ int kstrcmp_by_n(char *s1, char *s2, int n) {
     return (i == n || (*s1 == *s2));
 }
 
+
 int kstrlen(char *str){
     int count = 0;
     if(*str == '\0'){
         return 0;
     }
     while(*str != '\0'){
-        printf("%c", *str);
         count++;
-        *str++;
+        str++;
     }
     return count;
 }
