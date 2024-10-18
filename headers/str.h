@@ -1,7 +1,6 @@
 #ifndef STR_H
 #define STR_H
-
-#include <stdbool.h>  // For the `bool` type
+#include "defs.h"
 
 /**
  * @brief Compares two strings for equality.

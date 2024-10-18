@@ -77,5 +77,5 @@ int main(){
     // Run the task tree
     run_task_tree(tasks, 3);
 
-    return 0;
+    return EXIT_SUCCESS;
 }

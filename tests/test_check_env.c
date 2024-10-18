@@ -32,8 +32,5 @@ int main() {
         write(STDERR_FILENO, "Environment variable not found\n", 31);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }
-
-
-// this does not work

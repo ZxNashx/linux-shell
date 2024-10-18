@@ -13,8 +13,6 @@
  * and flags for background execution and pipelines. Each task can be linked to others to 
  * form a pipeline using `next` and `prev` pointers.
  */
-
-
 typedef struct Task {
     char *args[MAX_CMD_TOKENS];  /**< Array of command arguments, including the command itself.
                                       This must be null-terminated to work with exec functions. */
@@ -50,23 +48,19 @@ typedef struct Task {
 
     struct Task *prev;           /**< Pointer to the previous task in the pipeline (if any).
                                       - NULL if this is the first task in the pipeline. */
-    int prev_pipe_fd[2];
+    int prev_pipe_fd[2];    /**< File descriptors for the pipe connected to the previous task.
+                                - prev_pipe_fd[0]: Read end of the pipe.
+                                - prev_pipe_fd[1]: Write end of the pipe.
+                                - Both are set to -1 if there is no pipe from the previous task. */
 } Task;
 
 
-
+//unused, probably get rid of
 typedef struct Task_List {
     Task *list[MAX_NUM_TASKS]; //an array of tasks from which we can run processes
 } Task_List;
 
-
-//probably get rid of this
-typedef struct Command {
-    char * command;
-    char *argv[MAX_ARGS + 1];
-    unsigned int argc;
-} Command;
-
+//unused, probably get rid of
 void init_task_list(Task_List *tasks, Task array[]);
 void get_tasks(Task_List *job_list, char *str_to_split, char *tokens[],
                int *count, char *temp_string, char *temp_string2);

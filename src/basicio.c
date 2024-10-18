@@ -1,6 +1,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
+#include "basicio.h"
 #include "defs.h"
 
 
@@ -17,7 +18,8 @@ int move_fd(int fd_source, int fd_dest) {
         while (total_written < bytes_read) {
             bytes_written = write(fd_dest, buffer + total_written, bytes_read - total_written);
             if (bytes_written < 0) {
-                return_code = -1;
+                print_error("basicio.c: write() failed");
+                return_code = EXIT_FAILURE;
                 break;
             }
             total_written += bytes_written;
@@ -29,11 +31,37 @@ int move_fd(int fd_source, int fd_dest) {
     }
 
     if (bytes_read < 0) {
-        return_code = -1;
+        print_error("basicio.c: read() failed");
+        return_code = EXIT_FAILURE;
     }
 
     return return_code;
 }
+
+int print_error(char *char_arr) {
+    int i = 0;
+    int buff_size = 512;
+    char buffer[buff_size];
+    int done = false;
+    write(STDERR_FILENO, "\n\e[31m", 6);  // "\e[31m" starts red text
+    do {
+        if (char_arr[i] != '\0' && i < buff_size - 1) {  
+            buffer[i] = char_arr[i];
+            i++;
+        } else {
+            done = true;
+        }
+    } while (done == false);
+
+    buffer[i++] = '\n';
+    write(STDERR_FILENO, buffer, i);  
+
+    // Reset text color back to default
+    write(STDERR_FILENO, "\e[0m\n", 5);  // "\e[0m" resets the text color
+
+    return i; 
+}
+
 
 int print_string(char * char_arr, bool newline){
 	int i = 0;
@@ -66,7 +94,7 @@ int print_file(char *file_name, int print_destination) {
         return_code = move_fd(open_file, print_destination);
         close(open_file); 
     } else {
-        return_code = -1;
+        return_code = EXIT_FAILURE;
     }
     return return_code;
 }

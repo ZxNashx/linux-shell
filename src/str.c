@@ -1,13 +1,13 @@
 #include <unistd.h>
 #include <fcntl.h>
+#include "defs.h"
 #include "str.h"
 
-#include <stdio.h>
-
-#include "defs.h"
 // welcome to the kevin string library
 
-// Helper functions provided
+
+
+
 int kstrcmp(char *s1, char *s2) {
     while (*s1 == *s2) {
         if (*s1 == '\0' && *s2 == '\0') {
@@ -18,8 +18,7 @@ int kstrcmp(char *s1, char *s2) {
     }
     return false; 
 }
-void kstrconcat(char *s1, const char *s2)
-{
+void kstrconcat(char *s1, const char *s2) {
     // Move pointer to the end of s1
     while (*s1 != '\0') {
         s1++;
@@ -53,7 +52,7 @@ int kstrcmp_by_n(char *s1, char *s2, int n) {
 int kstrlen(char *str){
     int count = 0;
     if(*str == '\0'){
-        return 0;
+        return EXIT_SUCCESS;
     }
     while(*str != '\0'){
         count++;
@@ -64,7 +63,7 @@ int kstrlen(char *str){
 
 int kstrcpy(char *src, char *dst) {
     if (src == NULL) {
-        return 0;
+        return EXIT_SUCCESS;
     }
     int c = 0;
     while (*src != '\0') {
@@ -101,7 +100,7 @@ int kstrhas(char *str, char *substring) {
 
 
 int kstrhas_unary(char *str, char uchar) {
-    if (uchar == '\0') {
+    if (kstrlen(str) == 0) {
         // If the uchar is empty, we assume it is always found
         return true;
     }
@@ -111,7 +110,6 @@ int kstrhas_unary(char *str, char uchar) {
                 return true;
         }
     }
-
     // If no match was found after going through the main string
     return false;
 }

@@ -1,9 +1,11 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#include <stdio.h>
+#include "basicio.h"
 #include "str.h"
 #include "defs.h"
+#include "utils.h"
+
 
 int get_env_value(char *var_name, char *env_value) {
     int fd;
@@ -12,17 +14,19 @@ int get_env_value(char *var_name, char *env_value) {
     char *var_start = NULL;
     int var_len = kstrlen(var_name);  // Use custom function to get the length of var_name
 
-    // Open /proc/self/environ file to access the environment variables
+    // Open /proc/self/environ file to access the en/vironment variables
     fd = open("/proc/self/environ", O_RDONLY);
     if (fd < 0) {
-        return -1;  // Error opening the file
+        print_error("utils.c: open() failed");
+        return EXIT_FAILURE;  // Error opening the file
     }
 
     // Read the environment variables into buffer
     bytesRead = read(fd, buffer, ENV_BUFFER);
     if (bytesRead < 0) {
         close(fd);
-        return -1;  // Error reading the file
+        print_error("utils.c: read() failed");
+        return EXIT_FAILURE;  // Error reading the file
     }
 
     // Close the file descriptor
@@ -44,7 +48,8 @@ int get_env_value(char *var_name, char *env_value) {
     }
 
     if (var_start == NULL) {
-        return -1;  // Specified environment variable not found
+        print_error("utils.c: specified environment variable not found");
+        return EXIT_FAILURE; 
     }
 
     // Copy the environment variable value into env_value
@@ -58,22 +63,18 @@ int get_env_value(char *var_name, char *env_value) {
     // Return the length of the variable's value
     return j;
 }
-/**
- * Checks if the command exists in the PATH environment variable and constructs the full path.
- *
- * @param old_path The original command or path provided.
- * @param new_path A buffer to store the resolved full path if a change is made.
- * @return 1 if the path was changed (found in PATH), 0 if no change was made (old_path contains '/'), -1 if an error occurred.
- */
+
+
 int check_env_path(char *old_path, char *new_path) {
     if (kstrhas_unary(old_path, '/')) {
         kstrcpy(old_path, new_path);
-        return 0; // No change needed
+        return EXIT_SUCCESS; // No change needed
     } else {
         char path_value[4096];
         int path_len = get_env_value("PATH", path_value);
         if (path_len < 0) {
-            return -1; // Error retrieving PATH
+            print_error("utils.c: get_env_value() failed");
+            return EXIT_FAILURE; // Error retrieving PATH
         }
 
         int i = 0, dir_start = 0;
@@ -109,6 +110,7 @@ int check_env_path(char *old_path, char *new_path) {
             }
             i++;
         }
-        return -1; // Command not found in PATH
+        print_error("utils.c: command not found in PATH");
+        return EXIT_FAILURE;
     }
 }

@@ -1,10 +1,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 
-#include <stdio.h>
-
 #include "basicio.h"
-#include "shell.h"
 #include "defs.h"
 #include "process.h"
 #include "parser.h"
@@ -16,6 +13,7 @@ int main(int argc, char *argv[]) {
 
     int input_buffer_size = MAX_STR_SIZE;
     char read_buffer[input_buffer_size];
+	char original_buffer[input_buffer_size];
     int read_result;
     int is_shell_running = true;
 
@@ -24,13 +22,15 @@ int main(int argc, char *argv[]) {
     char to_split = ' ';
 	bool is_shell_cmd;
 
+
+	
     while(is_shell_running){
 		print_string(shell_name,false);
 		read_result = read_input(read_buffer, input_buffer_size);
 		print_string("Entered: ",false);
 		print_string(read_buffer,true);
 
-		int split_str_result = split_str(read_buffer, cmd_tokens, &token_count, to_split);
+		int split_str_result = split_str(read_buffer, cmd_tokens, &token_count, to_split, original_buffer);
 		is_shell_cmd = false;
 		if(kstrcmp(read_buffer,exit_command) == true){
 			is_shell_cmd = true;
@@ -38,5 +38,5 @@ int main(int argc, char *argv[]) {
 		}
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

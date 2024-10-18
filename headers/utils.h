@@ -5,7 +5,6 @@
 #include <fcntl.h>   // For open()
 #include <stdbool.h> // For bool type
 
-#define ENV_BUFFER 8192  /**< Maximum buffer size for reading environment variables. */
 
 /**
  * @brief Retrieves the value of an environment variable.

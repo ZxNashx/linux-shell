@@ -4,7 +4,6 @@
 #include <stdio.h>
 
 #include "basicio.h"
-#include "shell.h"
 #include "defs.h"
 #include "task.h"
 #include "process.h"
@@ -33,5 +32,5 @@ int main(int argc, char *argv[]) {
     parse(read_buffer, tasks, &current_task_count);
     link_tasks(tasks, current_task_count);
     run_task_tree(tasks, current_task_count);
-    return 0;
+    return EXIT_SUCCESS;
 }

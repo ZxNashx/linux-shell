@@ -4,7 +4,6 @@
 
 #include "defs.h"
 #include "utils.h"
-
 #include "basicio.h"
 
 int main() {
@@ -33,5 +32,5 @@ int main() {
         print_string("Command not found in PATH", true);
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

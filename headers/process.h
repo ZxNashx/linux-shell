@@ -10,7 +10,7 @@
  * @brief Executes a pipeline of tasks, linking processes together with pipes.
  *
  * @param task Pointer to the head of the task pipeline.
- * @return 0 on success, -1 on failure.
+ * @return EXIT_SUCCESS on success, -1 on failure.
  */
 int run_task_pipeline(Task *task);
 
@@ -19,7 +19,7 @@ int run_task_pipeline(Task *task);
  *
  * @param tasks Array of task pipelines.
  * @param task_count Number of task pipelines.
- * @return 0 on success, -1 on failure.
+ * @return EXIT_SUCCESS on success, -1 on failure.
  */
 int run_task_tree(Task tasks[], int task_count);
 /**
@@ -59,7 +59,7 @@ int run_task_tree(Task tasks[], int task_count);
  * };
  * if (setup_io(&task) == -1) {
  *     perror("Failed to set up I/O");
- *     return -1;
+ *     return EXIT_FAILURE;
  * }
  * @endcode
  */

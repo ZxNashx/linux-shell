@@ -1,8 +1,4 @@
 #include "defs.h"
-#include <fcntl.h>
-#include <sys/wait.h>
-#include <stdio.h>
-#include <stdint.h>
 #include "task.h"
 #include "parser.h"
 #include "str.h"
@@ -110,61 +106,10 @@ void get_tasks(Task_List *job_list, char *str_to_split, char *tokens[],
     for (i = 0; i < temp_job_arg_count; i++) {
         background_status[i] = job_list->list[i]->is_background;
     }
-
-    
-
-    
-
-
-
-    
-
     //transferring '|' separated strings to tokens
     for (int i = 0; i < temp_token_count; i++) {
         tokens[i] = temp_tokens[i];
     }
-
-    
-    
-
-
-    //Secondly separate pipes
-
-
-    // Initialize task fields (if needed)
-
-   /* Task *task;
-
-    // Process tokens
-    while (arg_count < *count) {
-        if (kstrcmp(tokens[curr_token], "<") == true) {
-            // Input redirection
-            curr_token++;
-            if (tokens[curr_token] != NULL) {
-                task->input_file = tokens[curr_token];  // Store the input file name
-            }
-        } else if (kstrcmp(tokens[curr_token], ">") == true) {
-            // Output redirection
-            task->next->output_file = tokens[curr_token++];
-            if (tokens[curr_token] != NULL) {
-                task->output_file = tokens[curr_token];  // Store the output file name
-            }
-        } else if (kstrcmp(tokens[curr_token], "|") == true) {
-            // Pipe handling
-            task->is_pipe = 1;  // Indicate that there is a pipe
-            break;  // Stop processing for this task, as the rest is part of the next task
-        } else {
-            // Regular argument
-            task->args[arg_count] = tokens[curr_token];  // Store the argument
-            arg_count++;
-        }
-        curr_token++;
-    }
-    task->arg_count = arg_count;
-    // Null-terminate the arguments list
-    task->args[arg_count] = NULL;
-    
-    */
 }
 /*
   Input: Task_List *tasks - list of all tasks to be run

@@ -1,13 +1,13 @@
-#include <stdio.h>
-#include <stdlib.h>
 #include <unistd.h>
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <string.h>
-#include <errno.h>
+
+#include "basicio.h"
 #include "task.h"
 #include "defs.h"
+#include "process.h"
+#include "utils.h"
 
 /**DUP2(oldfd, newfd)
  * 
@@ -30,8 +30,8 @@ int setup_io(Task *task) {
         // Open the input file
         task->input_fd = open(task->input_filename, O_RDONLY);
         if (task->input_fd < 0) {
-            write(STDERR_FILENO, "Error: Cannot open input file\n", 30);
-            return -1;
+            print_error("process.c: open() failed");
+            return EXIT_FAILURE;
         }
     } else {
         if (task->prev == NULL) {
@@ -48,8 +48,8 @@ int setup_io(Task *task) {
         // Open the output file
         task->output_fd = open(task->output_filename, O_WRONLY | O_CREAT | O_TRUNC, 0644);
         if (task->output_fd < 0) {
-            write(STDERR_FILENO, "Error: Cannot open output file\n", 31);
-            return -1;
+            print_error("process.c: open() failed");
+            return EXIT_FAILURE;
         }
     } else {
         if (task->next == NULL) {
@@ -61,10 +61,10 @@ int setup_io(Task *task) {
         }
     }
 
-    return 0;  // Success
+    return EXIT_SUCCESS;  // Success
 }
 
-void run_task_pipeline(Task *task_head) {
+int run_task_pipeline(Task *task_head) {
     Task *task = task_head;
     int pipe_fd[2];         // For the current pipe
     int prev_pipe_fd[2];    // For the previous pipe
@@ -73,7 +73,7 @@ void run_task_pipeline(Task *task_head) {
 
     if(task->is_pipe == true && task->prev != NULL){
         // trying to run a piped task...
-        return -1;
+        return EXIT_SUCCESS;
     }
 
     // Initialize previous pipe file descriptors
@@ -85,10 +85,14 @@ void run_task_pipeline(Task *task_head) {
         if (setup_io(task) == -1) {
             // Error occurred during setup_io
             // Cleanup and exit
-            if (prev_pipe_fd[0] != -1)
+            if (prev_pipe_fd[0] != -1) {
                 close(prev_pipe_fd[0]);
-            if (prev_pipe_fd[1] != -1)
+                print_error("process.c: pipe error");
+            }
+            if (prev_pipe_fd[1] != -1) {
                 close(prev_pipe_fd[1]);
+                print_error("process.c: pipe error");
+            }
             _exit(EXIT_FAILURE);
         }
 
@@ -97,12 +101,15 @@ void run_task_pipeline(Task *task_head) {
             // Create a new pipe
             if (pipe(pipe_fd) == -1) {
                 // Handle error using write
-                write(STDERR_FILENO, "Error: pipe failed\n", 19);
                 // Close any open file descriptors
-                if (prev_pipe_fd[0] != -1)
+                if (prev_pipe_fd[0] != -1) {
                     close(prev_pipe_fd[0]);
-                if (prev_pipe_fd[1] != -1)
+                    print_error("process.c: pipe error");
+                }
+                if (prev_pipe_fd[1] != -1) {
                     close(prev_pipe_fd[1]);
+                    print_error("process.c: pipe error");
+                }
                 _exit(EXIT_FAILURE);  
             }
         } else {
@@ -115,7 +122,7 @@ void run_task_pipeline(Task *task_head) {
         pid = fork();
         if (pid == -1) {
             // Handle error
-            write(STDERR_FILENO, "Error: fork failed\n", 19);
+            print_error("process.c: fork() failed");
             // Close any open file descriptors
             if (prev_pipe_fd[0] != -1)
                 close(prev_pipe_fd[0]);
@@ -169,15 +176,15 @@ void run_task_pipeline(Task *task_head) {
                 execve(resolved_path, task->args, NULL);
             } else {
                 // Error occurred, command not found
-                write(STDERR_FILENO, "Error: Command not found\n", 24);
+                print_error("process.c: command not found");
                 _exit(EXIT_FAILURE);
             }
 
             // If execve returns, an error occurred
-            write(STDERR_FILENO, "Error: execve failed\n", 21);
+            print_error("process.c: execve() failed");
             _exit(EXIT_FAILURE);
 
-            write(STDERR_FILENO, "Error: execve failed\n", 21);
+            print_error("process.c: execve() failed");
             _exit(EXIT_FAILURE);
             // untested ------------------
             
@@ -212,6 +219,7 @@ void run_task_pipeline(Task *task_head) {
 
     // Clean up any remaining child processes
     while ((pid = waitpid(-1, &status, 0)) > 0);
+    return EXIT_SUCCESS;
 }
 
 
@@ -227,8 +235,8 @@ int run_task_tree(Task tasks[], int task_count) {
 
         pids[i] = fork();
         if (pids[i] == -1) {
-            write(STDERR_FILENO, "fork failed\n", 12);
-            return -1;
+            print_error("process.c: fork() failed");
+            return EXIT_FAILURE;
         }
         if (pids[i] == 0) {  // Child process
             run_task_pipeline(&tasks[i]);
@@ -244,10 +252,10 @@ int run_task_tree(Task tasks[], int task_count) {
         }
         if (!tasks[i].is_background) {
             if (waitpid(pids[i], &status, 0) == -1) {
-                write(STDERR_FILENO, "waitpid failed\n", 15);
+                print_error("process.c: waitpid() failed");
             }
         }
     }
 
-    return 0;
+    return EXIT_SUCCESS;
 }

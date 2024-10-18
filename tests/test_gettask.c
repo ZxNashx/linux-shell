@@ -35,7 +35,7 @@ int main () {
       print_string(shell_name,false);
       read_result = read_input(read_buffer, MAX_STR_SIZE); //get input from user.
       if (read_result == -1) {
-        return 0; //could not read input error
+        return EXIT_SUCCESS; //could not read input error
       }
       
       get_tasks(&job_list, read_buffer, cmd_tokens, &task_count, temp_string, temp_string2);
@@ -58,5 +58,5 @@ int main () {
     */
     }
 
-  return 0;
+  return EXIT_SUCCESS;
 }
