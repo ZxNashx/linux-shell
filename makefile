@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -g -no-pie -Iheaders
 LDFLAGS = 
 
-OBJS = basicio.o parser.o shell.o process.o str.o task.o memory.o utils.o
+OBJS = basicio.o parser.o shell.o process.o str.o memory.o utils.o task.o
 
 # Default target to build everything (without cleaning)
 all: runshell

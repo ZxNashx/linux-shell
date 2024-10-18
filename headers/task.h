@@ -50,6 +50,7 @@ typedef struct Task {
 
     struct Task *prev;           /**< Pointer to the previous task in the pipeline (if any).
                                       - NULL if this is the first task in the pipeline. */
+    int prev_pipe_fd[2];
 } Task;
 
 
@@ -66,9 +67,9 @@ typedef struct Command {
     unsigned int argc;
 } Command;
 
-
-void get_tasks(Task_List list, char *str_to_split, char *tokens[],
-               int *count, char * original);
+void init_task_list(Task_List tasks, Task array[]);
+void get_tasks(Task_List job_list, char *str_to_split, char *tokens[],
+               int *count, char *temp_string);
 
 // Function Prototypes
 void task_memory_init();  // Initializes the memory pool for Task allocations
