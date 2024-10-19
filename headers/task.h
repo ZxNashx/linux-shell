@@ -3,8 +3,6 @@
 
 #include "defs.h"
 
-
-
 /**
  * @brief Structure to represent a task (or command) in a pipeline for a shell program.
  * 
@@ -55,20 +53,6 @@ typedef struct Task {
 } Task;
 
 
-//unused, probably get rid of
-typedef struct Task_List {
-    Task *list[MAX_NUM_TASKS]; //an array of tasks from which we can run processes
-} Task_List;
 
-//unused, probably get rid of
-void init_task_list(Task_List *tasks, Task array[]);
-void get_tasks(Task_List *job_list, char *str_to_split, char *tokens[],
-               int *count, char *temp_string, char *temp_string2);
-
-// Function Prototypes
-void task_memory_init();  // Initializes the memory pool for Task allocations
-Task *task_alloc();       // Allocates a new Task from the memory pool
-void task_free(Task *task);  // Frees a Task back to the memory pool
-void display_task_memory();  // Debug function to display memory pool status
 
 #endif  // TASK_H

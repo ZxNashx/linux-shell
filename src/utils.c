@@ -70,7 +70,7 @@ int check_env_path(char *old_path, char *new_path) {
         kstrcpy(old_path, new_path);
         return EXIT_SUCCESS; // No change needed
     } else {
-        char path_value[4096];
+        char path_value[ENV_BUFFER];
         int path_len = get_env_value("PATH", path_value);
         if (path_len < 0) {
             print_error("utils.c: get_env_value() failed");
@@ -78,7 +78,7 @@ int check_env_path(char *old_path, char *new_path) {
         }
 
         int i = 0, dir_start = 0;
-        char full_path[256];
+        char full_path[MAX_CMD_LENGTH];
 
         while (1) {
             char ch = path_value[i];

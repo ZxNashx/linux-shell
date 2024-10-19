@@ -1,1 +1,0 @@
-ls -al > out2.txt & ls & pwd | wc

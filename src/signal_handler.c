@@ -8,5 +8,5 @@
 
 void handle_sigint(int sig) {
     print_error("Please type 'exit' to close the shell.");
-    print_string(SHELL_NAME, false);
+    print_string(SHELL_NAME, false); // reprompt the users shell
 }

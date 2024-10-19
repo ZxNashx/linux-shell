@@ -21,7 +21,7 @@ int main(int argc, char *argv[]) {
 
 	struct sigaction sa = {
 		.sa_handler = handle_sigint,
-		.sa_flags = SA_RESTART | SA_NOCLDSTOP
+		.sa_flags = SA_RESTART | SA_NOCLDSTOP // flags for preventing ctrl+c
 	};
 
 	// Block all signals during the handler execution
@@ -50,7 +50,7 @@ int main(int argc, char *argv[]) {
 				}
 			}
 		} else {
-			print_error("Could not execute command, too short.");
+			print_error("No command was entered, please enter a command.");
 		}
 		current_task_count = 0;
 	}

@@ -75,7 +75,7 @@ int main(){
     Task *tasks[3] = {&task1, &task2, &task3};
 
     // Run the task tree
-    run_task_tree(tasks, 3);
+    run_task_tree(*tasks, 3);
 
     return EXIT_SUCCESS;
 }

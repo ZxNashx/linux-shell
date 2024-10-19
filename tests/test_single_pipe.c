@@ -58,7 +58,7 @@ int main(){
     task3.output_fd = -1;
 
     // Run the pipeline
-    run_task_pipeline(&task1);
+    run_task_pipeline(task1);
 
 }
 

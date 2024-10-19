@@ -39,51 +39,51 @@ int move_fd(int fd_source, int fd_dest) {
 }
 
 int print_error(char *char_arr) {
-    int i = 0;
+    int count = 0;
     int buff_size = 512;
     char buffer[buff_size];
     int done = false;
     write(STDERR_FILENO, "\n\e[31m", 6);  // "\e[31m" starts red text
     do {
-        if (char_arr[i] != '\0' && i < buff_size - 1) {  
-            buffer[i] = char_arr[i];
-            i++;
+        if (char_arr[count] != '\0' && count < buff_size - 1) {  
+            buffer[count] = char_arr[count];
+            count++;
         } else {
             done = true;
         }
     } while (done == false);
 
-    buffer[i++] = '\n';
-    write(STDERR_FILENO, buffer, i);  
+    buffer[count++] = '\n';
+    write(STDERR_FILENO, buffer, count);  
 
     // Reset text color back to default
     write(STDERR_FILENO, "\e[0m\n", 5);  // "\e[0m" resets the text color
 
-    return i; 
+    return count; 
 }
 
 
 int print_string(char * char_arr, bool newline){
-	int i = 0;
+	int count = 0;
 	int buff_size = 512;
 	char buffer[buff_size];
 	int done = false;
 	do{
-		if(char_arr[i] != '\0' && i < buff_size){
-			buffer[i] = char_arr[i];
-			i++;
+		if(char_arr[count] != '\0' && count < buff_size){
+			buffer[count] = char_arr[count];
+			count++;
 		}else{
 			done = true;
 		}
 	}while(done == false);
 
 	if(newline){
-		buffer[i] = '\n';
-		write(STDOUT_FILENO, buffer, ++i);
+		buffer[count] = '\n';
+		write(STDOUT_FILENO, buffer, ++count);
 	}else{
-		write(STDOUT_FILENO, buffer, i);
+		write(STDOUT_FILENO, buffer, count);
 	}
-	return i;
+	return count;
 }
 
 int print_file(char *file_name, int print_destination) {
@@ -101,19 +101,19 @@ int print_file(char *file_name, int print_destination) {
 
 int read_input(char *fill_buffer, int max_size) {	
     char current_char = '\0';
-    int i = 0;
+    int count = 0;
     int read_return;
 
     // Read until newline or max_size limit is reached
-    while (current_char != '\n' && i < max_size - 1) {
+    while (current_char != '\n' && count < max_size - count) {
         read_return = read(0, &current_char, 1);
         if (read_return <= 0) 
             break;  // Exit loop on error or EOF
-        fill_buffer[i++] = current_char;
+        fill_buffer[count++] = current_char;
     }
 
     // Properly terminate the string
-    fill_buffer[--i] = '\0';
+    fill_buffer[--count] = '\0';
 
     // If we reached the limit, or there's still input left, clear the buffer
     while (current_char != '\n' && read_return > 0) {
@@ -121,5 +121,5 @@ int read_input(char *fill_buffer, int max_size) {
     }
 
     // Return the number of characters read (negative if error occurred)
-    return read_return < 0 ? -i : i;
+    return read_return < 0 ? -count : count;
 }

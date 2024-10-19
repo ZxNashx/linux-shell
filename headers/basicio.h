@@ -11,7 +11,7 @@
  * 
  * @param fd_source The source file descriptor to read from.
  * @param fd_dest The destination file descriptor to write to.
- * @return EXIT_SUCCESS on success, -1 on error.
+ * @return EXIT_SUCCESS on success, EXIT_FAILURE on error.
  */
 int move_fd(int fd_source, int fd_dest);
 
@@ -35,7 +35,7 @@ int print_string(char *char_arr, bool newline);
  * @param char_arr The character array to print.
  * @return The number of characters written
  */
-int print_error(char * char_arr);
+int print_error(char *char_arr);
 
 /**
  * @brief Prints the contents of a file to a specified destination.
@@ -44,7 +44,7 @@ int print_error(char * char_arr);
  * 
  * @param file_name The name of the file to print.
  * @param print_destination The file descriptor to print the contents to.
- * @return EXIT_SUCCESS on success, -1 on error.
+ * @return EXIT_SUCCESS on success, EXIT_FAILURE on error.
  */
 int print_file(char *file_name, int print_destination);
 
@@ -57,7 +57,7 @@ int print_file(char *file_name, int print_destination);
  * 
  * @param fill_buffer The buffer to store the input.
  * @param max_size The maximum size of the buffer.
- * @return The number of characters read, or a negative value on error.
+ * @return The number of characters read, or EXIT_FAILURE on error.
  */
 int read_input(char *fill_buffer, int max_size);
 

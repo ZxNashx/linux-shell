@@ -90,7 +90,9 @@ int split_str(char *str_to_split, char *tokens[], int *count, char split_on, cha
 }
 
 void parse(char *input_string, Task tasks[], int *task_count) {
-    char *p = input_string;
+
+    // p is address of the current parsed character
+    char *p = input_string; 
     Task *current_task = NULL;
 
     *task_count = 0;
@@ -130,7 +132,6 @@ void parse(char *input_string, Task tasks[], int *task_count) {
             }
             if (*p == '\0') {
                 print_error("parser.c: expected filename");
-                // Error: expected filename
                 break;
             }
             char *filename = p;
@@ -155,7 +156,6 @@ void parse(char *input_string, Task tasks[], int *task_count) {
             }
             if (*p == '\0') {
                 print_error("parser.c: expected filename");
-                // Error: expected filename
                 break;
             }
             char *filename = p;
@@ -177,7 +177,6 @@ void parse(char *input_string, Task tasks[], int *task_count) {
                 // Start a new task
                 if (*task_count >= MAX_TASKS) {
                     print_error("parser.c: too many tasks");
-                    // Error: too many tasks
                     break;
                 }
                 current_task = &tasks[*task_count];
@@ -202,7 +201,6 @@ void parse(char *input_string, Task tasks[], int *task_count) {
                 current_task->args[current_task->arg_count] = NULL; // Ensure null-termination
             } else {
                 print_error("parser.c: too many arguments");
-                // Error: too many arguments
                 break;
             }
             // Advance p to the end of the token

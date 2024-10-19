@@ -3,10 +3,6 @@
 #include "defs.h"
 #include "str.h"
 
-// welcome to the kevin string library
-
-
-
 
 int kstrcmp(char *s1, char *s2) {
     while (*s1 == *s2) {
@@ -34,18 +30,18 @@ void kstrconcat(char *s1, const char *s2) {
 }
 
 int kstrcmp_by_n(char *s1, char *s2, int n) {
-    int i = 0;
-    while (i < n && *s1 == *s2) {  // Compare up to n characters
+    int count = 0;
+    while (count < n && *s1 == *s2) {  // Compare up to n characters
         if (*s1 == '\0' || *s2 == '\0') {  // Stop if either string ends before n characters
             break;
         }
         s1++;
         s2++;
-        i++;
+        count++;
     }
 
     // Check if we stopped because we reached n characters or due to a mismatch
-    return (i == n || (*s1 == *s2));
+    return (count == n || (*s1 == *s2));
 }
 
 

@@ -1,7 +1,6 @@
 #ifndef SIGNAL_HANDLER_H
 #define SIGNAL_HANDLER_H
 
-// Include the necessary standard headers for signals
 #include <signal.h>
 
 /**

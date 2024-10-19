@@ -4,13 +4,11 @@
 #include "defs.h"
 #include "task.h"
 
-// Function declarations
-
 /**
  * @brief Executes a pipeline of tasks, linking processes together with pipes.
  *
  * @param task Pointer to the head of the task pipeline.
- * @return EXIT_SUCCESS on success, -1 on failure.
+ * @return EXIT_SUCCESS on success, EXIT_FAILURE on failure.
  */
 int run_task_pipeline(Task *task);
 
@@ -19,9 +17,10 @@ int run_task_pipeline(Task *task);
  *
  * @param tasks Array of task pipelines.
  * @param task_count Number of task pipelines.
- * @return EXIT_SUCCESS on success, -1 on failure.
+ * @return EXIT_SUCCESS on success, EXIT_FAILURE on failure.
  */
 int run_task_tree(Task tasks[], int task_count);
+
 /**
  * @brief Configures input and output redirection for a given task.
  * 
@@ -33,8 +32,8 @@ int run_task_tree(Task tasks[], int task_count);
  * @param task Pointer to the Task structure to configure I/O redirection for.
  * 
  * @return 
- * - 0 on success.
- * - -1 on failure (e.g., unable to open files or set up redirection).
+ * - EXIT_SUCCESS on success.
+ * - EXIT_FAILURE on failure (e.g., unable to open files or set up redirection).
  * 
  * @details
  * - **Input Redirection**: If `task->input_filename` is not `NULL`, the function opens the file 
@@ -64,4 +63,5 @@ int run_task_tree(Task tasks[], int task_count);
  * @endcode
  */
 int setup_io(Task *task);
+
 #endif  // PROCESS_H

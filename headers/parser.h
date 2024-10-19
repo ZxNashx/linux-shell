@@ -9,12 +9,16 @@
  * This function splits a string into multiple tokens based on the specified delimiter.
  * It also removes leading whitespace from tokens and ensures no overflow of tokens occurs.
  *
+ * @warning original cannot be changed/reused as tokens simply points to various parts of
+ *          original as if original and tokens had the same shared memory space.
+ * @warning this function is only used in tests, not part of the main shell.
+ *
  * @param str_to_split The input string to split.
  * @param tokens Array of strings where tokens will be stored.
  * @param count Pointer to an integer that stores the number of tokens found.
  * @param split_on The delimiter character used for splitting the string.
- * @param original Temporary copy of the original string to safely manipulate.
- * @return EXIT_SUCCESS on success, -1 if input string is NULL or an error occurs.
+ * @param original Copy of the original string to manipulate.
+ * @return EXIT_SUCCESS on success, EXIT_FAILURE if input string is NULL or an error occurs.
  */
 int split_str(char *str_to_split, char *tokens[], int *count, char split_on, char *original);
 
@@ -30,6 +34,7 @@ int split_str(char *str_to_split, char *tokens[], int *count, char split_on, cha
  * @param input_string The input string containing the command line to be parsed.
  *                     This string is modified in-place during parsing by replacing
  *                     whitespace and special characters with null terminators (`\0`).
+ *
  * @param tasks An array of Task structures where each parsed task will be stored.
  * @param task_count A pointer to an integer where the total number of parsed tasks
  *                   will be stored.
@@ -60,7 +65,7 @@ int split_str(char *str_to_split, char *tokens[], int *count, char split_on, cha
  * parse(input, tasks, &task_count);
  * @endcode
  *
- * @error
+ * @note //errors
  * - If there are too many tasks or arguments, an error is printed using `print_error()`.
  * - If a redirection operator is not followed by a filename, an error is printed.
  *

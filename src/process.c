@@ -9,20 +9,24 @@
 #include "process.h"
 #include "utils.h"
 
-/**DUP2(oldfd, newfd)
+/** DUP2(oldfd, newfd)
  * 
 How It Works
     If oldfd is a valid open file descriptor, and newfd is different from oldfd:
     dup2 will copy the oldfd file descriptor into newfd.
 
     If newfd is already open, dup2 closes it first to free it for reuse.
-    After the call, both oldfd and newfd refer to the same resource (file, pipe, etc.), with identical properties (like read/write mode).
+    After the call, both oldfd and newfd refer to the same resource (file, pipe, etc.),
+    with identical properties (like read/write mode).
 Key Properties
     Any modifications made through one descriptor are reflected when accessed via the other.
     Both descriptors share the same file offset (for files) and status flags.
     When either oldfd or newfd is closed, the other remains valid unless explicitly closed.
  * 
  */
+
+
+
 
 int setup_io(Task *task) {
     // Input Redirection
@@ -71,8 +75,8 @@ int run_task_pipeline(Task *task_head) {
     pid_t pid;
     int status;
 
-    if(task->is_pipe == true && task->prev != NULL){
-        // trying to run a piped task...
+    if(task->is_pipe == true && task->prev != NULL) {
+        // Trying to run a piped task...
         return EXIT_SUCCESS;
     }
 
@@ -186,8 +190,7 @@ int run_task_pipeline(Task *task_head) {
 
             print_error("process.c: execve() failed");
             _exit(EXIT_FAILURE);
-            // untested ------------------
-            
+
         } else {
             // Parent process
 
